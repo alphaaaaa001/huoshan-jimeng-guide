@@ -1,0 +1,35 @@
+# 即梦 API 报错速查表
+
+## 认证类
+| 错误码 | 错误信息 | 原因 | 解法 |
+|---|---|---|---|
+| 100010 | SignatureDoesNotMatch | 手写 HMAC 签名不匹配 | 用 SDK，别手写 |
+| 100009 | InvalidAccessKey | AK 复制有误 | 从控制台完整复制，检查空格 |
+| 100002 | MissingParameter | URL 缺 Action/Version | 加 `?Action=...&Version=...` |
+| — | InvalidCredential | Authorization header 无效 | SDK 自动处理，检查 AK/SK |
+
+## SDK 安装类
+| 错误 | 原因 | 解法 |
+|---|---|---|
+| `No module named 'volcengine'` | 基类包没装 | `pip install volcengine` |
+| `ImportError: VisualService` | 子包缺失 | `pip install volcengine-python-sdk` |
+| SDK 装不上 | 无管理员权限 | 让管理员跑，或用虚拟环境 |
+
+## 限额类
+| 错误码 | 信息 | 原因 | 解法 |
+|---|---|---|---|
+| 1006 | 积分不足 | SessionID 每日额度用完 | 等明天重置 / 切官方 API |
+| 50209 | ModelNotOpen | ARK 模型未开通 | 控制台开通 Seedream |
+
+## 服务异常类（非代码问题）
+| 错误码 | 信息 | 现象 | 解法 |
+|---|---|---|---|
+| 50200 | req_key not supported | 提交成功，查询失败 | **服务端宕了**，等恢复 |
+| 50500 | Internal Error | 查询异常 | prompt 太长或服务临时故障 |
+| 50412/13 | Text Risk Not Pass | 文本审核不通过 | 改 prompt 措辞 |
+
+## 数据提取类
+| 现象 | 原因 | 解法 |
+|---|---|---|
+| `image_urls` 是空数组 | 图片在 base64 里 | 取 `binary_data_base64[]` |
+| 每次只出一张 | `force_single` 默认 true | 多次提交不同 prompt |
